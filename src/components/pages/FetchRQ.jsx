@@ -3,10 +3,13 @@ import { fetchPost } from "../../Api/api";
 import { useQuery } from "@tanstack/react-query";
 
 const FetchRQ = () => {
-  const { data } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPost,
   });
+
+  if(isLoading) return <p>Loading...</p>
+  if(isError) return <p>Error: {error.message}</p>
   return (
     <div>
       <section className="text-gray-600 body-font">

@@ -5,7 +5,6 @@ const api = axios.create({
 });
 
 // to Fetch the Data
-
 export const fetchPost = async ()=>{
    const response = await api.get('/posts');
    return response.status === 200 ? response.data : [];
