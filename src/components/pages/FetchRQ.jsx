@@ -1,6 +1,7 @@
 import React from "react";
 import { fetchPost } from "../../Api/api";
 import { useQuery } from "@tanstack/react-query";
+import { NavLink } from "react-router-dom";
 
 const FetchRQ = () => {
   const { data, isLoading, isError, error } = useQuery({
@@ -25,7 +26,9 @@ const FetchRQ = () => {
                   key={id}
                   className="lg:w-1/4 md:w-1/2 p-4 w-full border gap-2"
                 >
-                  <div className="mt-4 text-justify">
+                  <NavLink to={`/rq/${id}`}>
+                    <div className="mt-4 text-justify">
+                    <p>{id}</p>
                     <h2 className="text-gray-900 title-font text-lg font-medium">
                       {title}
                     </h2>
@@ -33,6 +36,7 @@ const FetchRQ = () => {
                       {body}
                     </h3>
                   </div>
+                  </NavLink>
                 </div>
               );
             })}

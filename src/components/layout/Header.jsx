@@ -27,7 +27,7 @@ const Header = () => {
           <NavLink to="/fetchOld" className="mr-5 hover:text-gray-900">
             Fetch Old
           </NavLink>
-          <NavLink to="/fetchRQ" className="mr-5 hover:text-gray-900">
+          <NavLink to="/rq" className="mr-5 hover:text-gray-900">
             Fetch RQ
           </NavLink>
         </nav>
