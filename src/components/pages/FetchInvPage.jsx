@@ -5,8 +5,8 @@ import { NavLink, useParams } from "react-router-dom";
 
 const FetchInvPage = () => {
   const { id } = useParams();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["post"],
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["post", id],
     queryFn: () => fetchInvPost(id),
   });
   console.log(data);
@@ -19,7 +19,7 @@ const FetchInvPage = () => {
       <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
         {data.body}
       </h3>
-      <NavLink to={'/rq'}><button className="bg-orange-400 px-4 py-1 font-bold">Go Back</button></NavLink>
+      <NavLink to={'/rq'}><button className="bg-orange-400 px-4 py-1 font-bold cursor-pointer">Go Back</button></NavLink>
     </div>
   );
 };
