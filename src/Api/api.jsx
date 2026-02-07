@@ -15,3 +15,9 @@ export const fetchInvPost = async (id) => {
   const response = await api.get(`/posts/${id}`);
   return response.status === 200 ? response.data : [];
 };
+
+// to Delete Post
+
+export const deletePost = async (id) => {
+  return api.delete(`/posts/${id}`);
+};

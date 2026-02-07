@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { fetchPost } from "../../Api/api";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { deletePost, fetchPost } from "../../Api/api";
+import {
+  keepPreviousData,
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { NavLink } from "react-router-dom";
 
 const FetchRQ = () => {
   const [pageNumber, setPageNumber] = useState(0);
+  const queryClient = useQueryClient();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["posts", pageNumber],
     queryFn: () => fetchPost(pageNumber),
@@ -14,12 +21,21 @@ const FetchRQ = () => {
     // refetchIntervalInBackground: true,
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deletePost(id),
+    onSuccess: (data, id) => {
+      queryClient.setQueryData(["posts", pageNumber], (curElm) => {
+       return curElm?.filter((post) => post.id !== id);
+      });
+    },
+  });
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error: {error.message}</p>;
   return (
     <div>
       <section className="body-font">
-        <div className="container px-5  mx-auto">
+        <div className=" px-5  ">
           <div className="flex flex-wrap m-4 ">
             {data?.map((curElm) => {
               const { id, title, body } = curElm;
@@ -39,15 +55,20 @@ const FetchRQ = () => {
                       </h3>
                     </div>
                   </NavLink>
+                  <button
+                    onClick={() => deleteMutation.mutate(id)}
+                    className="bg-red-400 font-bold text-white rounded-2xl py-1 px-3 cursor-pointer"
+                  >
+                    Delete
+                  </button>
                 </div>
               );
             })}
           </div>
           <div className="flex pl-4 gap-6">
             <button
-            disabled= {pageNumber === 0}
-            
-              onClick={() => setPageNumber((prev) => prev - 8)} 
+              disabled={pageNumber === 0}
+              onClick={() => setPageNumber((prev) => prev - 8)}
               className="bg-blue-700 px-3 py-1 rounded-xl text-white cursor-pointer"
             >
               Prev
